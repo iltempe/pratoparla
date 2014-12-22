@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="it">
+	<head>
+		<meta charset="utf-8">
+		<title>Tweets with Georeference #prato and #pratoparla</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta property="og:image" content="logoinvasionidigitali_200.png"/>
+ <link href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet" />
+ 
+      <!-- Leaflet 0.5: https://github.com/CloudMade/Leaflet-->
+		<link rel="stylesheet" href="http://joker-x.github.io/Leaflet.geoCSV/lib/leaflet.css" />
+		<!--[if lte IE 8]> <link rel="stylesheet" href="http://joker-x.github.io/Leaflet.geoCSV/lib/leaflet.ie.css" />  <![endif]-->  
+		<script src="http://joker-x.github.io/Leaflet.geoCSV/lib/leaflet.js"></script>
+
+		<!-- MarkerCluster https://github.com/danzel/Leaflet.markercluster -->
+		<link rel="stylesheet" href="http://joker-x.github.io/Leaflet.geoCSV/lib/MarkerCluster.css" />
+		<link rel="stylesheet" href="http://joker-x.github.io/Leaflet.geoCSV/lib/MarkerCluster.Default.css" />
+		<!--[if lte IE 8]> <link rel="stylesheet" href="http://joker-x.github.io/Leaflet.geoCSV/lib/MarkerCluster.Default.ie.css" /> <![endif]-->
+		<script src="http://joker-x.github.io/Leaflet.geoCSV/lib/leaflet.markercluster-src.js"></script>
+<script src="leaflet-hash.js"></script>
+
+		<!-- GeoCSV: https://github.com/joker-x/Leaflet.geoCSV -->
+		<script src="leaflet.geocsv-src.js"></script>
+ 
+		<!-- jQuery 1.8.3: http://jquery.com/ -->
+		<script src="http://joker-x.github.io/Leaflet.geoCSV/lib/jquery.js"></script>
+  <link rel="stylesheet" type="text/css" href="leaflet.social.css" />  
+<script type='text/javascript' src="leaflet.social.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-52366065-1']);
+  _gaq.push(['_setDomainName', 'teo-soft.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+		<style>	
+		html, body, #mapa {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;	
+			font-family: Arial, sans-serif;
+			font-color: #38383;
+		}
+
+		#botonera {
+			position:fixed;
+			top:10px;
+			left:50px;
+			z-index: 2;
+		}
+
+		#cargando {
+			position:fixed;
+			top:0;
+			left:0;
+			width:100%;
+			height:100%;
+			background-color:#666;
+			color:#fff;
+			font-size:2em;
+			padding:30% 2%;
+			z-index:10;
+		}
+
+		.boton {
+			border: 1px solid #96d1f8;
+			background: #65a9d7;
+			background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+			background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+			background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+			background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+			background: -o-linear-gradient(top, #3e779d, #65a9d7);
+			padding: 5px 5px;
+			-webkit-border-radius: 10px;
+			-moz-border-radius: 10px;
+			border-radius: 10px;
+			-webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			-moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+			box-shadow: rgba(0,0,0,1) 0 1px 0;
+			text-shadow: rgba(0,0,0,.4) 0 1px 0;
+			color: white;
+			font-size: 17px;
+			/*font-family: Helvetica, Arial, Sans-Serif;*/
+			text-decoration: none;
+			vertical-align: middle;
+		}
+		.boton:hover {
+			border-top-color: #28597a;
+			background: #28597a;
+			color: #ccc;
+		}
+		.boton:active {
+			border-top-color: #1b435e;
+			background: #1b435e;
+		}
+#infodiv{
+
+position:fixed;
+
+        left:0px;
+
+        bottom:15px;
+	font-size: 10px;
+
+        z-index:9999;
+
+        border-radius: 5px; 
+
+        -moz-border-radius: 5px; 
+
+        -webkit-border-radius: 5px; 
+
+        border: 2px solid #808080;
+
+        background-color:#fff;
+
+        padding:1px;
+
+        box-shadow: 0 3px 14px rgba(0,0,0,0.4)
+
+}
+#invasionilogo{
+position:fixed;
+			top:-10px;
+			left:48px;
+			border: 1px solid #000;
+	
+}
+		</style>
+	</head>
+	<body>
+
+		<div id="mapa"></div>
+		<div id="cargando">Loading #PRATOPARLA</div>
+<div id="invasionilogo" style="leaflet-popup-content-wrapper">
+<a href="http://www.pratosmart.org" target="_blank"><img src="pratosmartlogo.jpg" width="100px"></a>
+</div>
+<div id="infodiv" style="leaflet-popup-content-wrapper">
+
+Tweets with Georeference and #pratoparla by <a href="http://www.twitter.com/pratosmart" target="_blank">Pratosmart</a> for <a href="http://www.pratosmart.org" target="_blank">pratosmart.org</a> - Lic. CC-BY-SA </div>
+
+<script>
+
+//;$(function() {
+
+var mapa = L.map('mapa', {attributionControl:true}).setView([43.87, 11.08], 13);
+
+var osm = new L.tileLayer('http://tile.osm.org/{z}/{x}/{y}.png', {maxZoom: 19, attribution: 'Map Data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'});
+
+var mapbox = new L.tileLayer('http://c.tiles.mapbox.com/v3/tmcw.map-7s15q36b/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '<a href="http://mapbox.com">MapBox</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'}).addTo(mapa);
+
+var watercolor = new L.tileLayer('http://tile.stamen.com/watercolor/{z}/{x}/{y}.png', {maxZoom: 19, attribution: '<a href="http://stamen.com/">Stamen Design</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'});
+
+
+     var baseMaps = {
+    
+    "MapBox": mapbox,
+   "Mapnik": osm,
+   "Water Color": watercolor      
+        };
+        L.control.layers(baseMaps).addTo(mapa);
+
+ L.control.social({default_text: "Tweet Map of #pratoparla by @pratosmart "})
+               .addTo(mapa);
+
+   var hash = new L.Hash(mapa);
+
+var bankias = L.geoCsv(null, {
+	onEachFeature: function (feature, layer) {
+		var popup = '';
+var str= '"/></br>Link</a>';
+
+if (feature.properties.lat == ''){
+}else{
+
+popup +='<div class="codese"><table border="0" cellpadding="3" bgcolor="#000000" width="200" align="center"><tbody><tr><td><img src="'+feature.properties.profile_image_url+'" width="50" /></td>';
+popup += '<td><a href="http://www.twitter.com/'+feature.properties.from_user+'" target="_blank">@'+feature.properties.from_user+':</a><font color="#fff"> '+feature.properties.text+'</td></tr></tbody></table></font>';
+
+
+if (feature.properties.entities_str != ''){
+popup += '<table border="0" cellpadding="0" align="center"><tbody><tr><td><a href="'+feature.properties.status_url+'" target="_blank"><img src='+feature.properties.entities_str+' width="200" /></td></tr></tbody></table></a>';
+}
+
+var tdview = "http://map.f4-group.com/#lat=Y&lon=X&zoom=19&camera.theta=71.849"
+			x = feature.geometry.coordinates[0]
+			y = feature.geometry.coordinates[1]
+			tdview = tdview.replace("X",x)
+			tdview = tdview.replace("Y",y)
+			popup+= ' <a href="' + tdview + '" target="blank">Vista 3D</a>';
+		for (var clave in feature.properties) {
+
+		//	var title = bankias.getPropertyTitle(clave);
+		//	popup += '<b>'+title+'</b><br />'+feature.properties[clave]+'<br /><br />';
+var str = feature.properties.text;// For example, lets search this string,
+var term = "http://t.co/";// for the term "World",
+var index = str.indexOf(term);// and get its index.
+if(index != -1){// If the index is not -1 then the term was matched in the string,
+// alert(index);// and we can do some work based on that logic. (6 is alerted)
+//feature.properties.text='<a href="'+feature.properties.text+'">'+feature.properties.text//+'</a>';
+
+}
+
+		}
+if (document.body.clientWidth <= 767) {
+		layer.bindPopup(popup, {
+                                maxWidth: "210",
+				 maxHeight: "250",
+                                closeButton: false
+                            });
+}else{
+layer.bindPopup(popup, {
+                                maxWidth: "210",
+				 maxHeight: "400",
+                                closeButton: false
+                            });
+}
+
+	//	layer.bindPopup(popup);
+	
+}
+},
+	pointToLayer: function (feature, latlng) {
+		return L.marker(latlng, {
+			icon:L.icon({
+				iconUrl: 'twittersmall.png',
+				shadowUrl: '',
+				iconSize: [30,30],
+				shadowSize:   [22, 22],
+				shadowAnchor: [8, 7]
+			})
+		});
+	},
+	firstLineTitles: true
+});
+
+$.ajax ({
+	type:'GET',
+	dataType:'text',
+	url:'prato3.csv',
+   error: function() {
+     alert('Non riesco a caricare i dati. Prova a fare aggiorna pagina');
+   },
+	success: function(csv) {
+      var cluster = new L.MarkerClusterGroup();
+		bankias.addData(csv);
+		cluster.addLayer(bankias);
+		mapa.addLayer(cluster);
+		//mapa.fitBounds(cluster.getBounds());
+		mapa.setView([43.8860, 11.0823], 13);
+
+	},
+   complete: function() {
+      $('#cargando').delay(500).fadeOut('slow');
+   }
+});
+
+$('#localizame').click(function(e) {
+	mapa.locate();
+	$('#localizame').text('Localizzando...');
+	mapa.on('locationfound', function(e) { 
+		mapa.setView(e.latlng, 15);
+		$('#localizame').text('Localizzato');
+	});
+});
+//});
+</script>
+
+	</body>
+</html>
